@@ -10,7 +10,7 @@ import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
-@TeleOp(name = "Drive with this one")
+@TeleOp(name = "DO NOT DRIVE WITH THIS ONE ITS JUST AN EXAMPLE")
 public class Example_Overcommented extends LinearOpMode {
     final double DESIRED_DISTANCE = 12.0;
     final double SPEED_GAIN = 0.02;   //Forward Speed Control "Gain". eg: Ramp up to 50% power at a 25 inch error.   (0.50 / 25.0)

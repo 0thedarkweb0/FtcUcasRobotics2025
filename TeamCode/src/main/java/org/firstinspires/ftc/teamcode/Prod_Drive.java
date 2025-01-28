@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@TeleOp(name = "ProdDrive")
+@TeleOp(name = "ProdDrive (USE THIS ONE)")
 public class Prod_Drive extends LinearOpMode {
 
     @Override
@@ -14,6 +14,7 @@ public class Prod_Drive extends LinearOpMode {
         DcMotor motorFrontRight = hardwareMap.dcMotor.get("leftFrontDrive");
         DcMotor motorBackLeft = hardwareMap.dcMotor.get("leftBackDrive");
         DcMotor motorBackRight = hardwareMap.dcMotor.get("rightBackDrive");
+        DcMotor motorHang = hardwareMap.dcMotor.get("hang");
 
         // Reverse the right side motors
         // This may or may not need to be changed based on how the robots motors are mounted
@@ -76,14 +77,21 @@ public class Prod_Drive extends LinearOpMode {
               telemetry.addData("left bumper is being pressed", gamepad1.left_bumper);
             }
 
-            //GamePad right trigger
+            //set hang to positive when right trigger is pressed
             if (gamepad1.right_trigger > 0) {
               telemetry.addData("right trigger is being pressed", gamepad1.right_trigger);
+              motorHang.setPower(gamepad1.right_trigger);
             }
 
-            //GamePad left trigger
+            //Set hang to negative when left trigger is pressed
             if (gamepad1.left_trigger > 0) {
               telemetry.addData("left trigger is being pressed", gamepad1.left_trigger);
+              motorHang.setPower(-gamepad1.left_trigger);
+            }
+            
+            //set power to zero if no input
+            if (gamepad1.right_trigger == 0 && gamepad1.left_trigger == 0) {
+              motorHang.setPower(0);
             }
 
             // Adds telemetry on the control hub to check stick positions
