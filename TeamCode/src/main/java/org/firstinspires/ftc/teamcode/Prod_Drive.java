@@ -3,9 +3,20 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name = "ProdDrive (USE THIS ONE)")
+@TeleOp(name = "ProdDrive")
 public class Prod_Drive extends LinearOpMode {
+
+    static final double INCREMENT = 0.01;     // amount to slew servo each CYCLE_MS cycle
+    static final int CYCLE_MS = 50;     // period of each cycle
+    static final double MAX_POS = 2.0;     // Maximum rotational position
+    static final double MIN_POS = 0.0;     // Minimum rotational position
+
+    //Define class members
+    double position = (MAX_POS - MIN_POS) / 2; // Start at halfway position
+
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -14,13 +25,15 @@ public class Prod_Drive extends LinearOpMode {
         DcMotor motorFrontRight = hardwareMap.dcMotor.get("leftFrontDrive");
         DcMotor motorBackLeft = hardwareMap.dcMotor.get("leftBackDrive");
         DcMotor motorBackRight = hardwareMap.dcMotor.get("rightBackDrive");
-        DcMotor motorHang = hardwareMap.dcMotor.get("hang");
+        DcMotor motorArm = hardwareMap.dcMotor.get("arm");
+        Servo servoLeft = hardwareMap.servo.get("left");
+        Servo servoRight = hardwareMap.servo.get("right");
 
         // Reverse the right side motors
         // This may or may not need to be changed based on how the robots motors are mounted
         // If movement is weird mess with these first
-        // motorBackRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        // motorFrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorBackRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorFrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
        
         // This is the line that ends the init of the bot
         waitForStart();
@@ -61,12 +74,25 @@ public class Prod_Drive extends LinearOpMode {
             if (gamepad1.x) {
               telemetry.addData("x is being pressed", gamepad1.x);
             }
+            // Testing Spinny
+            if (gamepad1.right_bumper) {
+                position += INCREMENT;
+                if (position >= MAX_POS) {
+                    position = MAX_POS;
+                }
+            }
+
+            if (gamepad1.left_bumper) {
+                position -= INCREMENT;
+                if (position <= MIN_POS) {
+                    position = MIN_POS;
+                }
+            }
 
             //GamePad Y button
             if (gamepad1.y) {
               telemetry.addData("Y is being pressed", gamepad1.y);
             }
-
             //GamePad right bumper
             if (gamepad1.right_bumper) {
               telemetry.addData("right bumper is being pressed", gamepad1.right_bumper);
@@ -77,22 +103,22 @@ public class Prod_Drive extends LinearOpMode {
               telemetry.addData("left bumper is being pressed", gamepad1.left_bumper);
             }
 
-            //set hang to positive when right trigger is pressed
+            //GamePad right trigger
             if (gamepad1.right_trigger > 0) {
-              telemetry.addData("right trigger is being pressed", gamepad1.right_trigger);
-              motorHang.setPower(gamepad1.right_trigger);
+                motorArm.setPower(gamepad1.right_trigger);
+                telemetry.addData("right trigger is being pressed", gamepad1.right_trigger);
             }
 
-            //Set hang to negative when left trigger is pressed
+            //GamePad left trigger
             if (gamepad1.left_trigger > 0) {
+                motorArm.setPower(-gamepad1.left_trigger);
               telemetry.addData("left trigger is being pressed", gamepad1.left_trigger);
-              motorHang.setPower(-gamepad1.left_trigger);
             }
-            
-            //set power to zero if no input
-            if (gamepad1.right_trigger == 0 && gamepad1.left_trigger == 0) {
-              motorHang.setPower(0);
+
+            if (gamepad1.left_trigger == 0 && gamepad1.right_trigger == 0){
+                motorArm.setPower(0);
             }
+            servoLeft.setPosition(position);
 
             // Adds telemetry on the control hub to check stick positions
             telemetry.addData("Gamepad X", gamepad1.left_stick_x);

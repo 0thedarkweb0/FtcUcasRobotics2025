@@ -60,7 +60,7 @@ public class Example_Overcommented extends LinearOpMode {
         motorBackLeft = hardwareMap.dcMotor.get("backLeft");
         motorBackRight = hardwareMap.dcMotor.get("backRight");
         hang = hardwareMap.dcMotor.get("hang");
-        servo = hardwareMap.get(Servo.class, "left_hand");
+        servo = hardwareMap.servo.get("left_hand");
 
         double FrontLeftMotorLastSpeed = 0; 
         double FrontRightMotorLastSpeed = 0;
