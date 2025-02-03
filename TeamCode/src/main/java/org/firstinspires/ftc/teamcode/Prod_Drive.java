@@ -26,14 +26,8 @@ public class Prod_Drive extends LinearOpMode {
         DcMotor motorBackLeft = hardwareMap.dcMotor.get("leftBackDrive");
         DcMotor motorBackRight = hardwareMap.dcMotor.get("rightBackDrive");
         DcMotor motorArm = hardwareMap.dcMotor.get("arm");
-<<<<<<< HEAD
-        Servo servoLeft = hardwareMap.servo.get("servo");
-        Sevo servoRight = hardwareMap.servo.get("servo");
-        
-=======
         Servo servoLeft = hardwareMap.servo.get("left");
         Servo servoRight = hardwareMap.servo.get("right");
->>>>>>> 911ea13830ef7a9e88183c087bc8fffd2259bce3
 
         // Reverse the right side motors
         // This may or may not need to be changed based on how the robots motors are mounted
@@ -109,21 +103,13 @@ public class Prod_Drive extends LinearOpMode {
               telemetry.addData("left bumper is being pressed", gamepad1.left_bumper);
             }
 
-<<<<<<< HEAD
-            //set Armto positive when right trigger is pressed
-=======
             //GamePad right trigger
->>>>>>> 911ea13830ef7a9e88183c087bc8fffd2259bce3
             if (gamepad1.right_trigger > 0) {
                 motorArm.setPower(gamepad1.right_trigger);
                 telemetry.addData("right trigger is being pressed", gamepad1.right_trigger);
             }
 
-<<<<<<< HEAD
-            //Set Armto negative when left trigger is pressed
-=======
             //GamePad left trigger
->>>>>>> 911ea13830ef7a9e88183c087bc8fffd2259bce3
             if (gamepad1.left_trigger > 0) {
                 motorArm.setPower(-gamepad1.left_trigger);
               telemetry.addData("left trigger is being pressed", gamepad1.left_trigger);
