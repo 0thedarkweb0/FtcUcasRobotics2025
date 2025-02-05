@@ -84,15 +84,11 @@ public class RobotHardware {
      */
     public void init()    {
         // Define and Initialize Motors (note: need to use reference to actual OpMode).
-        leftDrive  = myOpMode.hardwareMap.get(DcMotor.class, "left_drive");
-        rightDrive = myOpMode.hardwareMap.get(DcMotor.class, "right_drive");
         armMotor   = myOpMode.hardwareMap.get(DcMotor.class, "arm");
 
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // Pushing the left stick forward MUST make robot go forward. So adjust these two lines based on your first test drive.
         // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
-        leftDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightDrive.setDirection(DcMotor.Direction.FORWARD);
 
         // If there are encoders connected, switch to RUN_USING_ENCODER mode for greater accuracy
         // leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);

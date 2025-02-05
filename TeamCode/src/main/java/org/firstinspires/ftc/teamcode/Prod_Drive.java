@@ -2,21 +2,13 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name = "ProdDrive")
+@TeleOp(name = "ProdDrive (Drive with this one)")
 public class Prod_Drive extends LinearOpMode {
-
-    static final double INCREMENT = 0.01;     // amount to slew servo each CYCLE_MS cycle
-    static final int CYCLE_MS = 50;     // period of each cycle
-    static final double MAX_POS = 2.0;     // Maximum rotational position
-    static final double MIN_POS = 0.0;     // Minimum rotational position
-
-    //Define class members
-    double position = (MAX_POS - MIN_POS) / 2; // Start at halfway position
-
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -26,8 +18,7 @@ public class Prod_Drive extends LinearOpMode {
         DcMotor motorBackLeft = hardwareMap.dcMotor.get("leftBackDrive");
         DcMotor motorBackRight = hardwareMap.dcMotor.get("rightBackDrive");
         DcMotor motorArm = hardwareMap.dcMotor.get("arm");
-        Servo servoLeft = hardwareMap.servo.get("left");
-        Servo servoRight = hardwareMap.servo.get("right");
+        CRServo servoLeft = hardwareMap.crservo.get("left");
 
         // Reverse the right side motors
         // This may or may not need to be changed based on how the robots motors are mounted
@@ -62,63 +53,44 @@ public class Prod_Drive extends LinearOpMode {
 
             //GamePad B button
             if (gamepad1.b) {
+              telemetry.addData("power",servoLeft.getDirection());
+              telemetry.addData("Position",servoLeft.getPower());
               telemetry.addData("B is being pressed", gamepad1.b);
             }
 
             //GamePad A button
             if (gamepad1.a) {
               telemetry.addData("A is being pressed", gamepad1.a);
+              servoLeft.setPower(0);
             }
             
             //GamePad X button
             if (gamepad1.x) {
+                servoLeft.setPower(.9);
               telemetry.addData("x is being pressed", gamepad1.x);
-            }
-            // Testing Spinny
-            if (gamepad1.right_bumper) {
-                position += INCREMENT;
-                if (position >= MAX_POS) {
-                    position = MAX_POS;
-                }
-            }
-
-            if (gamepad1.left_bumper) {
-                position -= INCREMENT;
-                if (position <= MIN_POS) {
-                    position = MIN_POS;
-                }
             }
             //Just for the sake of commiting
             //GamePad Y button
             if (gamepad1.y) {
+                servoLeft.setPower(-.9);
               telemetry.addData("Y is being pressed", gamepad1.y);
-            }
-            //GamePad right bumper
-            if (gamepad1.right_bumper) {
-              telemetry.addData("right bumper is being pressed", gamepad1.right_bumper);
-            }
-
-            //GamePad left bumper
-            if (gamepad1.left_bumper) {
-              telemetry.addData("left bumper is being pressed", gamepad1.left_bumper);
             }
 
             //GamePad right trigger
-            if (gamepad1.right_trigger > 0) {
-                motorArm.setPower(gamepad1.right_trigger);
-                telemetry.addData("right trigger is being pressed", gamepad1.right_trigger);
+            if (gamepad2.right_trigger > 0) {
+                motorArm.setPower(gamepad2.right_trigger*0.25);
+                telemetry.addData("right trigger is being pressed", gamepad2.right_trigger);
             }
 
             //GamePad left trigger
-            if (gamepad1.left_trigger > 0) {
-                motorArm.setPower(-gamepad1.left_trigger);
-              telemetry.addData("left trigger is being pressed", gamepad1.left_trigger);
+            if (gamepad2.left_trigger > 0) {
+                motorArm.setPower(-gamepad2.left_trigger*0.25);
+                telemetry.addData("left trigger is being pressed", gamepad2.left_trigger);
             }
 
-            if (gamepad1.left_trigger == 0 && gamepad1.right_trigger == 0){
+            if (gamepad2.left_trigger == 0 && gamepad2.right_trigger == 0){
                 motorArm.setPower(0);
             }
-            servoLeft.setPosition(position);
 
             // Adds telemetry on the control hub to check stick positions
             telemetry.addData("Gamepad X", gamepad1.left_stick_x);
